@@ -103,7 +103,7 @@ emojicrypt.encrypt(message, passphrase, params)
 
 #### emojiToN
 ```js
-emojiToN(emoji)
+lib.emojiToN(emoji)
 ```
 ```js
 /* arguments */
@@ -128,7 +128,7 @@ catch(error) {
 
 #### nToEmoji
 ```js
-nToEmoji(n)
+lib.nToEmoji(n)
 ```
 ```js
 /* arguments */
@@ -159,7 +159,7 @@ catch(error) {
 
 #### decodeHeader
 ```js
-decodeHeader(emojicrypt)
+lib.decodeHeader(emojicrypt)
 ```
 ```js
 /* arguments */
@@ -186,7 +186,7 @@ catch(error) {
 
 #### encodeHeader
 ```js
-encodeHeader(params)
+lib.encodeHeader(params)
 ```
 ```js
 /* arguments */
@@ -214,7 +214,7 @@ catch(error) {
 #### generateRandomBytes
 wrapper for [Crypto.getRandomValues](https://developer.mozilla.org/en-US/docs/Web/API/Crypto/getRandomValues)
 ```js
-generateRandomBytes(length)
+lib.generateRandomBytes(length)
 ```
 ```js
 /* arguments */
@@ -235,7 +235,7 @@ salt.length == 8
 #### createKey
 wrapper for [SubtleCrypto.importKey](https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/importKey) raw format
 ```js
-createKey(algo, bytes, uses, exportable)
+lib.createKey(algo, bytes, uses, exportable)
 ```
 ```js
 /* arguments */
@@ -267,7 +267,7 @@ createKey("AES-GCM", bytes, ["encrypt"])
 #### decryptGCM
 wrapper over [SubtleCrypto.decrypt](https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/encrypt)
 ```js
-decryptGCM(ciphertext, key, iv)
+lib.decryptGCM(ciphertext, key, iv)
 ```
 ```js
 /* arguments */
@@ -300,7 +300,7 @@ decryptGCM(ciphertext, key, iv)
 #### encryptGCM
 wrapper over [SubtleCrypto.encrypt](https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/encrypt)
 ```js
-encryptGCM(ciphertext, key, iv)
+lib.encryptGCM(ciphertext, key, iv)
 ```
 ```js
 /* arguments */
@@ -333,7 +333,7 @@ encryptGCM(ciphertext, key, iv)
 #### sha256
 wrapper over [SubtleCrypto.digest](https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/digest)
 ```js
-sha256(buffer)
+lib.sha256(buffer)
 ```
 ```js
 /* arguments */
@@ -357,7 +357,7 @@ sha256(buffer)
 #### scrypt
 wrapper over [``scrypt()`` from ``ricmoo/scrypt-js``](https://github.com/ricmoo/scrypt-js/blob/master/scrypt.js#L262)
 ```js
-scrypt(passphrase, salt, N, r, p, length, progressCallback)
+lib.scrypt(passphrase, salt, N, r, p, length, progressCallback)
 ```
 ```js
 /* arguments */
