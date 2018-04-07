@@ -26,7 +26,7 @@ TODO
 
 #### decrypt
 ```js
-emojicrypt.decrypt(emojicrypt, passphrase, progressCallback)
+libemojicrypt.decrypt(emojicrypt, passphrase, progressCallback)
 ```
 ```js
 /* arguments */
@@ -63,7 +63,7 @@ emojicrypt.decrypt(emojicrypt, passphrase)
 
 #### encrypt
 ```js
-emojicrypt.encrypt(message, passphrase, params, progressCallback)
+libemojicrypt.encrypt(message, passphrase, params, progressCallback)
 ```
 ```js
 /* arguments */
