@@ -31,7 +31,8 @@ function decrypt(emojicrypt, passphrase, progressCallback) {
     if (typeof(emojicrypt) != "string") throw new TypeError("Invalid emojicrypt.");
     if (typeof(passphrase) != "string") throw new TypeError("Invalid passphrase.");
     
-    emojicrypt = lib.emojicryptToBuffer(emojicrypt);
+    try { emojicrypt = lib.emojicryptToBuffer(emojicrypt); }
+    catch(error) { return Promise.reject(error); }
     
     try { params = lib.decodeHeader(emojicrypt); }
     catch(error) { return Promise.reject(error); }
