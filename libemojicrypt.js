@@ -31,6 +31,8 @@ function decrypt(emojicrypt, passphrase, progressCallback) {
     if (typeof(emojicrypt) != "string") throw new TypeError("Invalid emojicrypt.");
     if (typeof(passphrase) != "string") throw new TypeError("Invalid passphrase.");
     
+    emojicrypt = lib.emojicryptToBuffer(emojicrypt);
+    
     try { params = lib.decodeHeader(emojicrypt); }
     catch(error) { return Promise.reject(error); }
     
@@ -90,6 +92,17 @@ lib.emojiToN = function(emoji) {
 }
 
 
+lib.nameToN = function(name) {
+    var n;
+    
+    n = emoji256.names.indexOf(name);
+    
+    if (n == -1) throw new EmojiMissingError(name, null);
+    
+    return n;
+}
+
+
 
 lib.nToEmoji = function(n) {
     var emoji;
@@ -103,14 +116,31 @@ lib.nToEmoji = function(n) {
 
 
 
+lib.emojicryptToBuffer = function(emojicrypt) {
+    
+    emojicrypt = emojicrypt.replace(/\s/g, '');
+    
+    return new Uint8Array(
+        emojicrypt.split(":").filter(function(part) {
+            return part != "";
+        }).reduce(function(arr, part) {
+            if (/^[\x20-\xFF]*$/.test(part)) {
+                arr.push(lib.nameToN(part));
+            } else {
+                arr = arr.concat(getSymbols(part).map(lib.emojiToN));
+            }
+            return arr;
+        }, [])
+    );
+    
+}
+
+
+
 lib.decodeHeader = function(emojicrypt) {
     var firstByte, version, header, params;
     
-    // convert to an array of symbols
-    // TODO: document getSymbols dependency
-    emojicrypt = getSymbols(emojicrypt);
-    
-    firstByte = lib.emojiToN(emojicrypt[0]);
+    firstByte = emojicrypt[0];
     
     version = firstByte >> 4;
     
@@ -118,7 +148,6 @@ lib.decodeHeader = function(emojicrypt) {
         throw new UnsupportedProtocolError(version);
     
     header = emojicrypt.slice(0, protocol[version].headerLength);
-    header = header.map(lib.emojiToN);
     
     // may throw an error
     params = protocol[version].decodeHeader(lib, header);
@@ -250,14 +279,6 @@ lib.bitSlice = function(byte, from, to) {
     length = to - from;
     
     return byte >> (8-from-length) & ((1 << length) - 1);
-}
-
-
-
-lib.sliceToBuffer = function(array, from, to) {
-    return baseEmoji.fromUnicode(
-        array.slice(from, to).join("")
-    );
 }
 
 

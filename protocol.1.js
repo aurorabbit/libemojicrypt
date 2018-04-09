@@ -30,8 +30,8 @@ protocol[1] = {
     decodeHeader: function(lib, header) {
         var v, N, r, a, l, s, params;
         
-        if (!Array.isArray(header))
-            throw new TypeError("Invalid protocol header");
+        if (!header instanceof Uint8Array)
+            throw new TypeError("Protocol header must be a Uint8Array.");
         if (header.length != protocol[1].headerLength)
             throw new TypeError("Protocol header is not the correct size");
         
@@ -136,30 +136,25 @@ protocol[1] = {
     decrypt: function(lib, emojicrypt, passphrase, params, progressCallback) {
         var headerLength, hmac, salt, ciphertext;
         
-        if (typeof(emojicrypt) != "string")
-            throw new TypeError("Emojicrypt must be a string.");
+        if (!emojicrypt instanceof Uint8Array)
+            throw new TypeError("Emojicrypt must be a Uint8Array.");
         if (typeof(passphrase) != "string")
             throw new TypeError("Passphrase must be a string.");
-        
-        emojicrypt = getSymbols(emojicrypt);
         
         if (params.lowerpw) passphrase = passphrase.toLowerCase();
         passphrase = lib.utf8ToBuffer(passphrase);
         
         headerLength = protocol[1].headerLength;
         
-        hmac = lib.sliceToBuffer(
-            emojicrypt,
+        hmac = emojicrypt.slice(
             headerLength,
             headerLength + params.hmacLength
         );
-        salt = lib.sliceToBuffer(
-            emojicrypt,
+        salt = emojicrypt.slice(
             headerLength + params.hmacLength,
             headerLength + params.hmacLength + params.saltLength
         );
-        ciphertext = lib.sliceToBuffer(
-            emojicrypt,
+        ciphertext = emojicrypt.slice(
             headerLength + params.hmacLength + params.saltLength
         );
         
